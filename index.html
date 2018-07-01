@@ -15,12 +15,28 @@
   <script src="https://cdn.jsdelivr.net/momentjs/2.12.0/moment.min.js"></script>
   <script src="https://www.gstatic.com/firebasejs/5.2.0/firebase.js"></script>
 
-  <div id = "schedule"></div>
-
+  <div id = "first-time"></div>
+  <div id = "frequency"></div>
+  First Train Time (HH:MM):
   <form>
-    <span id="todo-item">To Do Item: <input id="to-do" type="text" ><input id="add-to-do" value="Add Item" type="submit"></span>
+       
+    <span id="input-item"> <input id="first-train" type="text" ><input id="add-first-train" value="Add Item" type="submit"></span>
   </form>
 
+  <form>
+        <span id="input-item">Train Name: <input id="train-name" type="text" ></span>
+      </form>
+
+      <form>
+            <span id="input-item">Destination: <input id="destination-name" type="text" ></span>
+          </form>
+
+          <form>
+                <span id="input-item">Frequency (min): <input id="frequency" type="text" ></span>
+              </form>
+
+
+              <button id="button">Submit</button>
 </head>
 
 <body>
@@ -100,27 +116,44 @@
     // Time is 3:30 AM
     var firstTime = "03:30";
 
-    $("#add-to-do").on("click", function(event) {
+    $("#add-first-train").on("click", function(event) {
 // prevent form from submitting
 event.preventDefault();
 
-    var input = $('#to-do').val();
-    console.log(input);
+    var firstTrainTime = $('#first-train').val();
+    console.log(firstTrainTime);
 
-    if (isNaN(input)) {
-        $("#schedule").html(input + " is not a time");
+    if (isNaN(firstTrainTime)) {
+        $("#first-time").html(FirstTrainTime + " is not a time");
     
 }
     else{
 
     // $("#schedule").html(firstTime);
-    $("#schedule").html(input);
+    $("#first-time").html(firstTrainTime);
 
     }
 
+     $("#add-first-train").on("click", function(event) {
+        event.preventDefault();
+    var frequency = $('#frequency').val();
+    console.log(frequency);
+    if (isNaN(frequency)) {
+        $("#frequency").html(frequency + " is not a time");
+    
+
+    }
+    else{
+
+// $("#schedule").html(firstTime);
+$("#frequency").html(frequency);
+
+
+
+    }
     
     // First Time (pushed back 1 year to make sure it comes before current time)
-    var firstTimeConverted = moment(input, "HH:mm").subtract(1, "years");
+    var firstTimeConverted = moment(firstTrainTime, "HH:mm").subtract(1, "years");
     console.log(firstTimeConverted);
 
     // Current Time
@@ -145,6 +178,7 @@ event.preventDefault();
     console.log("ARRIVAL TIME: " + moment(nextTrain).format("hh:mm"));
 
     });
+});
   </script>
 
     
