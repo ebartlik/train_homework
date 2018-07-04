@@ -12,28 +12,129 @@
   
  
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="style.css">
   <script src="https://cdn.jsdelivr.net/momentjs/2.12.0/moment.min.js"></script>
   <script src="https://www.gstatic.com/firebasejs/5.2.0/firebase.js"></script>
 
-  <div id = "first-time"></div>
-  <div id = "frequency"></div>
-  First Train Time (HH:MM):
-  <form>
-       
-    <span id="input-item"> <input id="first-train" type="text" ><input id="add-first-train" value="Add Item" type="submit"></span>
-  </form>
+  <!-- <div id = "first-time"></div> -->
+  <!-- <div id = "frequency"></div> -->
+  <!-- <div id = "train-name"></div> -->
+  <!-- <div id = "train-destination"></div> -->
+  <!-- <div id = "next-train"></div> -->
+  <!-- <div id = "minutes-away"></div> -->
+
+  <table class="table" id= "table-id">
+    <thead>
+      <tr>
+        <th scope="col">Train Name</th>
+        <th scope="col">Train Destination</th>
+        <th scope="col">Frequency</th>
+        <th scope="col">Next Train</th>
+        <th scope="col">Minutes Away</th>
+
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td id = "train-name"></th>
+        <td id = "train-destination"></td>
+        <td id = "frequency"></td>
+        <td id = "next-train"></td>
+        <td id = "minutes-away"></td>
+        <td id = "first-time"></td>
+      </tr>
+
+      <tr>
+        <th scope="row" id = "train-destination"></th>
+        <td></td>
+        <td></td>
+        <td></td> 
+      </tr>
+
+      <tr>
+        <th scope="row" id = "frequency"></th>
+        <td></td>
+        <td></td>
+        <td></td> 
+      </tr>
+
+      <tr>
+        <th scope="row" id = "next-train"></th>
+        <td></td>
+        <td></td>
+        <td></td> 
+      </tr>
+
+      <tr>
+        <th scope="row" id = "minutes-away"></th>
+        <td></td>
+        <td></td>
+        <td></td> 
+      </tr>
+
+
+  <br>
+  <br>
+  
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+
+  <div class="container">
+    <div class = "row">
+  <div class="col-lg-10">
+            
+        <!-- Sign-up Form (note the various input "types")-->
+        <form role="form">
+          <div class="form-group row">
+            <label for="train-input">Train Name:</label>
+            <input class="form-control" id="train-input" type="text">
+          </div>
+          <div class="form-group row">
+            <label for="destination">Destination:</label>
+            <input class="form-control" id="destination" type="text">
+          </div>
+          <div class="form-group row">
+            <label for="first-train">First Train Time (HH:MM):</label>
+            <input class="form-control" id="first-train" type="time">
+          </div>
+          <div class="form-group row">
+                <label for="frequency-input">Frequency (min):</label>
+                <input class="form-control" id="frequency-input" type="number">
+              </div>
+
+            </div>
+        </div>
+  
+  <!-- First Train Time (HH:MM):
+  <form> -->
+<!--        
+    <span id="input-item"> <input id="first-train" type="text" ></span>
+        <! <input id="add-first-train" value="Add Item" type="submit"></span> -->
+  <!-- </form> - -->
 
   <form>
-        <span id="input-item">Train Name: <input id="train-name" type="text" ></span>
-      </form>
+        <!-- <span id="input-item">Train Name: <input id="train-input" type="text" ></span> -->
+        <!-- <span id="input-item">Destination: <input id="destination" type="text" ></span> 
+        <span id="input-item">"First Train Time (HH:MM)": <input id="first-train" type="text" ></span> 
+        <span id="input-item">Frequency (min): <input id="frequency-num" type="text" ></span> 
+      </form> -->
 
-      <form>
+      <!-- <form>
             <span id="input-item">Destination: <input id="destination-name" type="text" ></span>
-          </form>
+          </form> -->
 
-          <form>
+          <!-- <form>
                 <span id="input-item">Frequency (min): <input id="frequency" type="text" ></span>
-              </form>
+              </form> -->
 
 
               <button id="button">Submit</button>
@@ -57,6 +158,9 @@
     messagingSenderId: "283737279653"
   };
   firebase.initializeApp(config);
+
+
+  var dataRef = firebase.database();
 
     // Assume the following situations.
 
@@ -116,42 +220,86 @@
     // Time is 3:30 AM
     var firstTime = "03:30";
 
-    $("#add-first-train").on("click", function(event) {
+    $("#button").on("click", function(event) {
 // prevent form from submitting
 event.preventDefault();
 
-    var firstTrainTime = $('#first-train').val();
-    console.log(firstTrainTime);
-
-    if (isNaN(firstTrainTime)) {
-        $("#first-time").html(FirstTrainTime + " is not a time");
-    
-}
-    else{
-
-    // $("#schedule").html(firstTime);
-    $("#first-time").html(firstTrainTime);
-
-    }
-
-     $("#add-first-train").on("click", function(event) {
-        event.preventDefault();
-    var frequency = $('#frequency').val();
+var frequency = $('#frequency-input').val().trim();
     console.log(frequency);
-    if (isNaN(frequency)) {
-        $("#frequency").html(frequency + " is not a time");
+
+var firstTrainTime = $('#first-train').val().trim();
+console.log(firstTrainTime);
+// firstTrainTime=/^(1[0-2])|0[1-9]:[0-5][0-9]$/;
+
+var dest = $('#destination').val().trim();
+console.log(dest);
+
+var name = $('#train-input').val().trim();
+console.log(name);
+
+var nextArrival = $('#next-train').val().trim;
+
+
+dataRef.ref().push({
+        
+        name: name,
+        dest: dest,
+        frequency: frequency,
+        firstTrainTime: firstTrainTime,
+        dateAdded: firebase.database.ServerValue.TIMESTAMP
+
+
+
+    
+  //     dataRef.ref().on(“child_added”, function(childSnap) {
+  //  $(“#train-name”).append(“<tr><td>” + childSnap.val().name + “</td><td>” + childSnap.val().dest + “</td><td>” + childSnap.val().frequency + “</td><td>” + nextArrival + “</td><td>” + minutesAway + “</td></tr>“);
+
+  //  console.log(childSnap.val().trainName);
+  //  console.log(childSnap.val().destination);
+  //  console.log(childSnap.val().trainFrequency);
+  //  console.log(childSnap.val().nextArrival);
+  //  console.log(childSnap.val().minutesAway);
+
     
 
-    }
-    else{
+});
 
-// $("#schedule").html(firstTime);
-$("#frequency").html(frequency);
+      if (isNaN(firstTrainTime)) {
+          alert("Please enter a valid time (HH:MM)")
+          $("#first-time").html("");
+      }
+        if  (isNaN(frequency)) {
+         alert("Please enter a valid frequency (min)")
+   
+ }
+     else{
 
+    $("#schedule").html(firstTime);
+    $("#first-time").html(firstTrainTime);
+    $("#frequency").html(frequency);
+    $("#train-destination").html(dest);
+    $("#train-name").html(name)
 
+     }
 
-    }
+      $("#button").on("click", function(event) {
+         event.preventDefault();
+   var frequency = $('#frequency').val();
+     console.log(frequency);
+     if (isNaN(frequency)) {
+         $("#frequency").html(frequency + " is not a time");
     
+
+     }
+     else{
+
+  $("#schedule").html(firstTime);
+ $("#frequency").html(frequency);
+
+
+     }
+     
+    });
     // First Time (pushed back 1 year to make sure it comes before current time)
     var firstTimeConverted = moment(firstTrainTime, "HH:mm").subtract(1, "years");
     console.log(firstTimeConverted);
@@ -166,22 +314,26 @@ $("#frequency").html(frequency);
 
 
     // Time apart (remainder)
-    var tRemainder = diffTime % tFrequency;
-    console.log(tRemainder);
+    var tRemainder = diffTime % frequency;
+    console.log("difference between last train and current time: " + tRemainder);
 
     // Minute Until Train
-    var tMinutesTillTrain = tFrequency - tRemainder;
+    var tMinutesTillTrain = frequency - tRemainder;
     console.log("MINUTES TILL TRAIN: " + tMinutesTillTrain);
+    $("#minutes-away").html("Minutes Away: " + tMinutesTillTrain);
 
     // Next Train
     var nextTrain = moment().add(tMinutesTillTrain, "minutes");
     console.log("ARRIVAL TIME: " + moment(nextTrain).format("hh:mm"));
-
-    });
+    $("#next-train").html ("Next Arrival: " + moment(nextTrain).format("hh:mm"));
 });
+   
+  
+
+
   </script>
 
-    
+  
 
 </body>
 
