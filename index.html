@@ -17,6 +17,18 @@
   <script src="https://cdn.jsdelivr.net/momentjs/2.12.0/moment.min.js"></script>
   <script src="https://www.gstatic.com/firebasejs/5.2.0/firebase.js"></script>
 
+
+</head>
+
+
+<body>
+
+
+    <header>
+        Train Schedules
+      </header>
+     
+
   <!-- <div id = "first-time"></div> -->
   <!-- <div id = "frequency"></div> -->
   <!-- <div id = "train-name"></div> -->
@@ -27,11 +39,14 @@
   <table class="table" id= "table-id">
     <thead>
       <tr>
-        <th scope="col">Train Name</th>
-        <th scope="col">Train Destination</th>
-        <th scope="col">Frequency</th>
-        <th scope="col">Next Train</th>
-        <th scope="col">Minutes Away</th>
+        <th scope="col-lg-10">Train Name</th>
+        <th scope="col-lg-10">Train Destination</th>
+        <th scope="col-lg-10">Frequency</th>
+        <th scope="col-lg-10">Next Train</th>
+        <th scope="col-lg-10">Minutes Away</th>
+
+
+        
 
       </tr>
     </thead>
@@ -45,8 +60,11 @@
         <td id = "first-time"></td>
       </tr>
 
-      <tr>
-        <th scope="row" id = "train-destination"></th>
+
+     
+
+      <!-- <tr>
+        <th scope="row"">/th>
         <td></td>
         <td></td>
         <td></td> 
@@ -71,18 +89,15 @@
         <td></td>
         <td></td>
         <td></td> 
-      </tr>
+      </tr> -->
 
-
-  <br>
-  <br>
+      <div class="col-lg-12">
+          <div class="card-body">
+              <div id="push"></div>
+            </div>
+ 
   
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
+ 
   <br>
   <br>
   <br>
@@ -104,12 +119,14 @@
           </div>
           <div class="form-group row">
             <label for="first-train">First Train Time (HH:MM):</label>
-            <input class="form-control" id="first-train" type="time">
+            <input class="form-control" id="first-train" type="text">
           </div>
           <div class="form-group row">
                 <label for="frequency-input">Frequency (min):</label>
                 <input class="form-control" id="frequency-input" type="number">
               </div>
+
+              
 
             </div>
         </div>
@@ -138,10 +155,9 @@
 
 
               <button id="button">Submit</button>
-</head>
 
-<body>
 
+             
   <!-- Script -->
 
   <script>
@@ -162,63 +178,13 @@
 
   var dataRef = firebase.database();
 
-    // Assume the following situations.
+    
 
-    // (TEST 1)
-    // First Train of the Day is 3:00 AM
-    // Assume Train comes every 3 minutes.
-    // Assume the current time is 3:16 AM....
-    // What time would the next train be...? (Use your brain first)
-    // It would be 3:18 -- 2 minutes away
+   
+    // var tFrequency = 3;
 
-    // (TEST 2)
-    // First Train of the Day is 3:00 AM
-    // Assume Train comes every 7 minutes.
-    // Assume the current time is 3:16 AM....
-    // What time would the next train be...? (Use your brain first)
-    // It would be 3:21 -- 5 minutes away
-
-    // nextTrainTime = firstTrainTime
-    // 
-    // loop {
-    //    result = nextTrainTime + interval
-      // if (currentTime <= result){
-      //  return result
-      //}
-    // }
-    // loop again
-
-    //
-
-
-    // ==========================================================
-
-    // Solved Mathematically
-    // Test case 1:
-    // current - firstTrain
-    // 16 - 00 = 16
-
-    // minutesOfCurr % frequency...
-    // 16 % 3 = 1 (Modulus is the remainder)
-
-    // frequency - remainder = minutes away
-    // 3 - 1 = 2 minutes away
-
-    // minutesAway + currentTime = nextTrain
-    // 2 + 3:16 = 3:18
-
-    // Solved Mathematically
-    // Test case 2:
-    // 16 - 00 = 16
-    // 16 % 7 = 2 (Modulus is the remainder)
-    // 7 - 2 = 5 minutes away
-    // 5 + 3:16 = 3:21
-
-    // Assumptions
-    var tFrequency = 3;
-
-    // Time is 3:30 AM
-    var firstTime = "03:30";
+    // // Time is 3:30 AM
+    // var firstTime = "03:30";
 
     $("#button").on("click", function(event) {
 // prevent form from submitting
@@ -229,7 +195,7 @@ var frequency = $('#frequency-input').val().trim();
 
 var firstTrainTime = $('#first-train').val().trim();
 console.log(firstTrainTime);
-// firstTrainTime=/^(1[0-2])|0[1-9]:[0-5][0-9]$/;
+
 
 var dest = $('#destination').val().trim();
 console.log(dest);
@@ -237,8 +203,8 @@ console.log(dest);
 var name = $('#train-input').val().trim();
 console.log(name);
 
-var nextArrival = $('#next-train').val().trim;
-
+//  var nextArrival = $('#next-train').val().trim();
+//  console.log(nextArrival);
 
 dataRef.ref().push({
         
@@ -246,61 +212,62 @@ dataRef.ref().push({
         dest: dest,
         frequency: frequency,
         firstTrainTime: firstTrainTime,
+        // nextArrival: nextArrivalnextArr,
         dateAdded: firebase.database.ServerValue.TIMESTAMP
 
-
-
-    
-  //     dataRef.ref().on(“child_added”, function(childSnap) {
-  //  $(“#train-name”).append(“<tr><td>” + childSnap.val().name + “</td><td>” + childSnap.val().dest + “</td><td>” + childSnap.val().frequency + “</td><td>” + nextArrival + “</td><td>” + minutesAway + “</td></tr>“);
-
-  //  console.log(childSnap.val().trainName);
-  //  console.log(childSnap.val().destination);
-  //  console.log(childSnap.val().trainFrequency);
-  //  console.log(childSnap.val().nextArrival);
-  //  console.log(childSnap.val().minutesAway);
-
-    
-
 });
+       
+//});
+    
+    
+    // Firebase watcher + initial loader HINT: This code behaves similarly to .on("value")
+    dataRef.ref().on("child_added", function(childSnap) {
 
-      if (isNaN(firstTrainTime)) {
-          alert("Please enter a valid time (HH:MM)")
-          $("#first-time").html("");
-      }
-        if  (isNaN(frequency)) {
-         alert("Please enter a valid frequency (min)")
-   
- }
-     else{
+     
+      
+      // Log everything that's coming out of snapshot
+      name = childSnap.val().name;
+      dest = childSnap.val().dest;
+      frequency = childSnap.val().frequency;
+      firstTrainTime = childSnap.val().firstTrainTime;
+      console.log(childSnap.val().name);
+      console.log(childSnap.val().dest);
+      console.log(childSnap.val().frequency);
+      console.log(childSnap.val().firstTrainTime);
+      // console.log(childSnapshot.val().nextArrival);
+      
+    
+    
+//append to table
+// $(".table").append("<div class='well'><span class='train-name'> " + $("#train-destination").html(childSnapshot.val().name)) +
+//         " </span><span class='train-dest'> " + childSnapshot.val().dest +
+//           " </span><span class='train-frequency'> " + childSnapshot.val().frequency +
+//             " </span><span class='train-start'> " + childSnapshot.val().firstTrainTime + 
+//              "</span><span class='train-start'> " + childSnapshot.val().nextTrain + 
+//              "</span></div>");
 
-    $("#schedule").html(firstTime);
-    $("#first-time").html(firstTrainTime);
-    $("#frequency").html(frequency);
-    $("#train-destination").html(dest);
-    $("#train-name").html(name)
 
-     }
 
-      $("#button").on("click", function(event) {
-         event.preventDefault();
-   var frequency = $('#frequency').val();
-     console.log(frequency);
-     if (isNaN(frequency)) {
-         $("#frequency").html(frequency + " is not a time");
+
+              //  " </span><span class='train-next'> " + childSnapshot.val().nextArrival +
+
+    //          }, function(errorObject) {
+    //   console.log("Errors handled: " + errorObject.code);
+    // });
+
+
+    dataRef.ref().orderByChild("dateAdded").limitToLast(1).on("child_added", function(snapshot) {
+      // Change the HTML to reflect
+      $("#train-name").append(childSnap.val().name + '<br>');
+      $("#train-destination").append(childSnap.val().dest + '<br>');
+      $("#frequency").append(childSnap.val().frequency + '<br>');
+      // $("#first-time").text(snapshot.val().firstTrainTime);
     
 
-     }
-     else{
+    // PUSH CHILD ADDED FUNCTION TO FIREBASE DATABASE
+ 
+  
 
-  $("#schedule").html(firstTime);
- $("#frequency").html(frequency);
-
-
-     }
-     
-    });
-    // First Time (pushed back 1 year to make sure it comes before current time)
     var firstTimeConverted = moment(firstTrainTime, "HH:mm").subtract(1, "years");
     console.log(firstTimeConverted);
 
@@ -320,17 +287,17 @@ dataRef.ref().push({
     // Minute Until Train
     var tMinutesTillTrain = frequency - tRemainder;
     console.log("MINUTES TILL TRAIN: " + tMinutesTillTrain);
-    $("#minutes-away").html("Minutes Away: " + tMinutesTillTrain);
+    $("#minutes-away").append("Minutes Away: " + tMinutesTillTrain + '<br>');
 
     // Next Train
-    var nextTrain = moment().add(tMinutesTillTrain, "minutes");
-    console.log("ARRIVAL TIME: " + moment(nextTrain).format("hh:mm"));
-    $("#next-train").html ("Next Arrival: " + moment(nextTrain).format("hh:mm"));
+     var nextTrain = moment().add(tMinutesTillTrain, "minutes");
+     console.log("ARRIVAL TIME: " + moment(nextTrain).format("hh:mm"));
+     $("#next-train").append("Next Arrival: " + moment(nextTrain).format("hh:mm")+ '<br>');
+
 });
-   
-  
 
-
+});
+});
   </script>
 
   
