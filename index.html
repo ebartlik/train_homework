@@ -15,7 +15,8 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
   <link rel="stylesheet" href="style.css">
   <script src="https://cdn.jsdelivr.net/momentjs/2.12.0/moment.min.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/5.2.0/firebase.js"></script>
+  <!-- <script src="https://www.gstatic.com/firebasejs/5.2.0/firebase.js"></script> -->
+  <script src="https://www.gstatic.com/firebasejs/5.4.2/firebase.js"></script>
 
 
 </head>
@@ -165,16 +166,25 @@
 
       
   // Initialize Firebase
-  var config = {
-    apiKey: "AIzaSyBPevZazUvCcjjovI9bUvrMfAn3UL2lOng",
-    authDomain: "train-schedules-60a13.firebaseapp.com",
-    databaseURL: "https://train-schedules-60a13.firebaseio.com",
-    projectId: "train-schedules-60a13",
+  // var config = {
+  //   apiKey: "AIzaSyBPevZazUvCcjjovI9bUvrMfAn3UL2lOng",
+  //   authDomain: "train-schedules-60a13.firebaseapp.com",
+  //   databaseURL: "https://train-schedules-60a13.firebaseio.com",
+  //   projectId: "train-schedules-60a13",
+  //   storageBucket: "",
+  //   messagingSenderId: "283737279653"
+  // };
+  // firebase.initializeApp(config);
+
+var config = {
+    apiKey: "AIzaSyCQLvlFSKBmPwvm6CQTRp1F0pMtUDEXdYg",
+    authDomain: "train-scheduler-f1558.firebaseapp.com",
+    databaseURL: "https://train-scheduler-f1558.firebaseio.com",
+    projectId: "train-scheduler-f1558",
     storageBucket: "",
-    messagingSenderId: "283737279653"
+    messagingSenderId: "785050140135"
   };
   firebase.initializeApp(config);
-
 
   var dataRef = firebase.database();
 
@@ -203,37 +213,53 @@ console.log(dest);
 var name = $('#train-input').val().trim();
 console.log(name);
 
-//  var nextArrival = $('#next-train').val().trim();
-//  console.log(nextArrival);
-
-dataRef.ref().push({
-        
+// Creates local "temporary" object for holding train data
+var newTrain = {
         name: name,
         dest: dest,
         frequency: frequency,
         firstTrainTime: firstTrainTime,
-        // nextArrival: nextArrivalnextArr,
-        dateAdded: firebase.database.ServerValue.TIMESTAMP
+}
 
-});
+// Uploads train data to the database
+dataRef.ref().push(newTrain);
+   
+//Logs everything to console
+console.log(newTrain.name);
+console.log(newTrain.dest);
+console.log(newTrain.frequency);
+console.log(newTrain.firstTrainTime);
        
-//});
+
+//clears inputs
+       
+  $("#train-input").val("");
+  $("#destination").val("");
+  $("#first-train").val("");
+  $("#frequency-input").val("");
     
-    
+  return false;
+});  
     // Firebase watcher + initial loader HINT: This code behaves similarly to .on("value")
-    dataRef.ref().on("child_added", function(childSnap) {
+    dataRef.ref().on("child_added", function(childSnapshot, prevChildKey)  {
+
+     console.log(childSnapshot.val());
+      
+      // Store everything into a variable that's coming out of snapshot
+      var tname = childSnapshot.val().name;
+      // name = childSnap.val().name;
+      var tdest = childSnapshot.val().dest;
+      var tfrequency = childSnapshot.val().frequency;
+      var tfirstTrainTime = childSnapshot.val().firstTrainTime;
+
+      // var timeArr = tFirstTrainTime.split(":");
+      
 
      
-      
-      // Log everything that's coming out of snapshot
-      name = childSnap.val().name;
-      dest = childSnap.val().dest;
-      frequency = childSnap.val().frequency;
-      firstTrainTime = childSnap.val().firstTrainTime;
-      console.log(childSnap.val().name);
-      console.log(childSnap.val().dest);
-      console.log(childSnap.val().frequency);
-      console.log(childSnap.val().firstTrainTime);
+      // console.log(childSnap.val().name);
+      // console.log(childSnap.val().dest);
+      // console.log(childSnap.val().frequency);
+      // console.log(childSnap.val().firstTrainTime);
       // console.log(childSnapshot.val().nextArrival);
       
     
@@ -258,9 +284,9 @@ dataRef.ref().push({
 
     dataRef.ref().orderByChild("dateAdded").limitToLast(1).on("child_added", function(snapshot) {
       // Change the HTML to reflect
-      $("#train-name").append(childSnap.val().name + '<br>');
-      $("#train-destination").append(childSnap.val().dest + '<br>');
-      $("#frequency").append(childSnap.val().frequency + '<br>');
+      $("#train-name").append(tname + '<br>');
+      $("#train-destination").append(tdest + '<br>');
+      $("#frequency").append(tfrequency + '<br>');
       // $("#first-time").text(snapshot.val().firstTrainTime);
     
 
@@ -268,7 +294,7 @@ dataRef.ref().push({
  
   
 
-    var firstTimeConverted = moment(firstTrainTime, "HH:mm").subtract(1, "years");
+    var firstTimeConverted = moment(tfirstTrainTime, "HH:mm").subtract(1, "years");
     console.log(firstTimeConverted);
 
     // Current Time
@@ -281,11 +307,11 @@ dataRef.ref().push({
 
 
     // Time apart (remainder)
-    var tRemainder = diffTime % frequency;
+    var tRemainder = diffTime % tfrequency;
     console.log("difference between last train and current time: " + tRemainder);
 
     // Minute Until Train
-    var tMinutesTillTrain = frequency - tRemainder;
+    var tMinutesTillTrain = tfrequency - tRemainder;
     console.log("MINUTES TILL TRAIN: " + tMinutesTillTrain);
     $("#minutes-away").append("Minutes Away: " + tMinutesTillTrain + '<br>');
 
@@ -297,7 +323,7 @@ dataRef.ref().push({
 });
 
 });
-});
+
   </script>
 
   
