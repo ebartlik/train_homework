@@ -15,9 +15,13 @@
     font-family:Arial;
     display: table;
     bottom:auto;
-     margin-top: 10px; 
+     margin-top: 40px; 
      font-family: Georgia, 'Times New Roman', Times, serif
     
+}
+
+#table-id{
+    margin-bottom: -60px;
 }
 
 
